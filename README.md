@@ -1,17 +1,22 @@
 # FMT Kladblok
 
-**Een klein kladblok voor Mac, Windows en Linux.** Schrijf of plak een idee, kopieer je tekst of download hem als tekst- of Markdown-bestand. Je klad wordt automatisch in je browser bewaard. Werkt offline, zonder account, abonnement of AI-sleutel.
+## Een plek voor je volgende idee
 
-Ik maakte dit met AI omdat ik het zelf nodig had. Ik ben geen programmeur en geen designer. Ik deel de software om je op gang te helpen: probeer haar, bouw erop voort en maak haar passend bij jouw werk.
+Schrijf een notitie, plak een tekst of werk een idee uit. Je klad wordt automatisch in je browser bewaard. Download je tekst zodra je hem ergens anders wilt gebruiken.
 
-![FMT Kladblok met een voorbeeldnotitie](docs/kladblok.png)
+![Zo ziet FMT Kladblok eruit: een notitie schrijven en bewaren](docs/kladblok.png)
 
-## Beginnen
+**[Download Kladblok voor Mac, Windows en Linux](https://github.com/erwinblom/kladblok/releases/download/v2.0.0/FMT-Kladblok-v2.0.0.zip)**
 
-1. Kies **Code → Download ZIP** bovenaan deze GitHub-pagina.
+Gratis · Werkt offline · Geen account · Geen installatie
+
+## In drie stappen aan de slag
+
+1. Download de ZIP via de link hierboven.
 2. Pak de hele ZIP uit in een vaste map op je computer.
-3. Open **index.html** in Chrome of Edge. Je ziet het kladblok en kunt meteen schrijven. Er is geen installatie of lokale server nodig.
-4. Bewaar een bladwijzer naar dit bestand om het terug te vinden.
+3. Open **index.html** in Chrome of Edge en begin met schrijven.
+
+Bewaar een bladwijzer naar dit bestand om je kladblok terug te vinden.
 
 Deze browseruitgave is dezelfde op Mac, Windows en Linux. Gebruik steeds dezelfde browser, hetzelfde profiel en dezelfde uitgepakte map. Verplaatsen of een andere browser gebruiken kan een andere opslagplek opleveren. De browseruitgave heeft geen icoon in de systeemmenubalk.
 
@@ -29,6 +34,10 @@ Alleen in de lokale browseropslag van dit bestand. Er is geen synchronisatie of 
 
 De eerdere native Mac-versie blijft beschikbaar in `Sources/`. Die bewaart haar eigen klad in `~/Library/Application Support/FMT Kladblok Open Source/kladblok.json`. Er is geen automatische migratie: kopieer je tekst uit die app naar deze browseruitgave. De persoonlijke Werkplaats-koppelingen zijn geen onderdeel van deze openbare tool.
 
+## Waarom ik dit deel
+
+Ik maakte dit met AI omdat ik het zelf nodig had. Ik ben geen programmeur en geen designer. Ik deel de software om je op gang te helpen: probeer haar, bouw erop voort en maak haar passend bij jouw werk.
+
 ## Zo pas je Kladblok aan
 
 Je hoeft niet te kunnen programmeren om een kleine wijziging te proberen:
@@ -44,9 +53,13 @@ Je hoeft niet te kunnen programmeren om een kleine wijziging te proberen:
 
 Een gewone chat kan je computer niet vanzelf aanpassen. Werkt een download niet, vraag: “Noem de bestandsnaam, de exacte tekst die ik moet zoeken en de vervanging.” Geef bij problemen de volledige foutmelding door, zonder je privénotities of geheimen. `index.html` bevat interface en werking; de kleur staat bovenaan bij `--accent`.
 
-## Oude native Mac-app bouwen
+<details>
+<summary>Voor gevorderden: de oude Mac-menubalkapp bouwen</summary>
+
 
 De browserversie hierboven vraagt geen bouwtools. Voor de bestaande Mac-menubalkapp: installeer Apple Command Line Tools (`xcode-select --install`), open Terminal in deze map en voer `zsh bouw.sh` uit. Open daarna `FMT Kladblok.app`. Deze bronroute is alleen voor macOS en tekent lokaal ad hoc; het is geen genotariseerde download. De iconenfamilie staat in `Resources/` en blijft meegeleverd.
+
+</details>
 
 ## Controle en vrijheid
 
