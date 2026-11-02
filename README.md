@@ -1,6 +1,6 @@
 # FMT Kladblok
 
-Een eenvoudig kladblok in de menubalk van je Mac. Schrijf of plak tekst, kopieer alles of bewaar een tekstbestand. Je klad wordt automatisch lokaal bewaard.
+Een eenvoudig kladblok in de menubalk van je Mac. Schrijf of plak tekst, kopieer alles of bewaar een tekst- of Markdown-bestand. Je klad wordt automatisch lokaal bewaard.
 
 Ik maakte dit met AI omdat ik het zelf nodig had. Ik ben geen programmeur en geen designer. Door dit te delen wil ik laten zien wat mogelijk is en je op gang helpen. Bouw erop voort en maak het passend bij jouw werk en smaak.
 
@@ -14,15 +14,15 @@ Je hebt een Mac en Apple Command Line Tools nodig. Geen account, internetdienst,
 2. Open Terminal. Controleer `xcode-select -p`. Ontbreken de bouwtools, voer `xcode-select --install` uit en voltooi de Apple-installatie.
 3. Typ `cd `, sleep de uitgepakte map met `bouw.sh` naar Terminal en druk Enter.
 4. Voer `zsh bouw.sh` uit. Start daarna met `open "FMT Kladblok.app"`.
-5. Schrijf een titel en een paar regels. Klik **Bewaar als tekst**, kies een plek en open het bestand in Teksteditor. Stop Kladblok en open opnieuw: je klad blijft behouden.
+5. Schrijf een titel en een paar regels. Kies **Tekst (.txt)** of **Markdown (.md)** en klik **Bewaar als…**, kies een plek en open het bestand in Teksteditor. Stop Kladblok en open opnieuw: je klad blijft behouden.
 
 Klik op het pensymbool in de menubalk om het venster terug te halen. **Esc**, **⌘H** en **Verberg** verbergen alleen het venster. **Kopieer alles** zet titel en tekst op het klembord. **Wis** vraagt eerst bevestiging. Sluit eerdere kopieën voordat je een nieuwe versie start.
 
 ## Gegevens en eigen versie
 
-Titel en tekst staan lokaal in `~/Library/Application Support/FMT Kladblok Open Source/kladblok.json`. Je klad gaat nergens automatisch naartoe; tekstexport komt op de plek die je zelf kiest. Kopiëren gebruikt het gedeelde macOS-klembord. Voor een leeg begin: stop de app en verwijder uitsluitend die opslagmap, na eventuele export.
+Titel en tekst staan lokaal in `~/Library/Application Support/FMT Kladblok Open Source/kladblok.json`. Je klad gaat nergens automatisch naartoe; tekst- of Markdown-export komt op de plek die je zelf kiest. Kopiëren gebruikt het gedeelde macOS-klembord. Voor een leeg begin: stop de app en verwijder uitsluitend die opslagmap, na eventuele export.
 
-Deze zelfstandige uitgave gebruikt een eigen app-identiteit en opslagmap. Erwins persoonlijke versie heeft koppelingen met zijn Werkplaats. Die zijn hier vervangen door **Bewaar als tekst**; deze uitgave heeft geen online bewaarknop. Je kunt tekst met kopiëren en plakken in je eigen Werkplaats gebruiken. Exports bevatten alleen je eigen titel en tekst.
+Deze zelfstandige uitgave gebruikt een eigen app-identiteit en opslagmap. Erwins persoonlijke versie heeft koppelingen met zijn Werkplaats. Die zijn hier vervangen door **Bewaar als…**; deze uitgave heeft geen online bewaarknop. Je kunt tekst met kopiëren en plakken in je eigen Werkplaats gebruiken. Exports bevatten alleen je eigen titel en tekst.
 
 Het vaste icoon staat als SVG, PNG en ICNS in Resources. `bouw.sh` neemt het mee. Hertekenen kan optioneel met Python 3 en Pillow: `python3 Resources/maak-icoon.py` en `python3 Resources/maak-icns.py`; dit is niet nodig om de app te bouwen.
 
@@ -39,3 +39,7 @@ Werkt de download niet, vraag voor een kleine wijziging de exacte zoektekst, ver
 Code en technische documentatie: [MIT](LICENSE). FMT-naam, logo en afgeleide iconen: [aparte merkvoorwaarden](MERKVOORWAARDEN.md). Voor verspreide gewijzigde versies gebruik je een eigen merk; instellingen voor eigen gebruik verplichten je niet tot hernoemen.
 
 Dit is broncode die je zelf bouwt, geen Developer ID-ondertekende of genotariseerde download. De build tekent lokaal ad hoc. Andere Macs en installatie door een beginner zijn nog niet getest. Bewaar belangrijke teksten ook als los bestand.
+
+## Tekst of Markdown
+
+Kies vóór bewaren **Tekst (.txt)** of **Markdown (.md)**. Het bewaardialoog gebruikt de bijbehorende extensie. Tekst bewaart titel en inhoud als gewone tekst; Markdown zet `# ` vóór een ingevulde titel en behoudt de inhoud zoals je die schreef, inclusief eventuele Markdown-opmaak. Beide zijn UTF-8. Annuleren verandert je klad niet.

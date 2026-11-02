@@ -1,4 +1,5 @@
 import AppKit
+import UniformTypeIdentifiers
 
 let red = NSColor(srgbRed: 225/255, green: 6/255, blue: 0, alpha: 1)
 final class TargetLogo: NSView {
@@ -81,9 +82,9 @@ final class App: NSObject, NSApplicationDelegate, NSTextViewDelegate, NSTextFiel
             noteID = draft["id"] ?? noteID
         }
         scroll.documentView = editor
-        destination.addItems(withTitles:["Tekstbestand"])
-        destination.selectItem(at:0); destination.setAccessibilityLabel("Bewaar als tekst")
-        let online = button("Bewaar als tekst", #selector(saveOnline)); saveButton = online
+        destination.addItems(withTitles:["Tekst (.txt)", "Markdown (.md)"])
+        destination.selectItem(at:0); destination.setAccessibilityLabel("Bestandsformaat")
+        let online = button("Bewaar als…", #selector(saveOnline)); saveButton = online
         let copy = button("Kopieer alles", #selector(copyAll)); let clear = button("Wis", #selector(clearNote))
         let hide = button("Verberg", #selector(hideWindow)); let quit = button("Stop", #selector(quitApp))
         copy.contentTintColor = red
@@ -98,7 +99,7 @@ final class App: NSObject, NSApplicationDelegate, NSTextViewDelegate, NSTextFiel
             noteTitle.topAnchor.constraint(equalTo: subtitle.bottomAnchor, constant: 16), noteTitle.leadingAnchor.constraint(equalTo: root.leadingAnchor, constant: 24), noteTitle.trailingAnchor.constraint(equalTo: root.trailingAnchor, constant: -24), noteTitle.heightAnchor.constraint(equalToConstant: 32),
             scroll.topAnchor.constraint(equalTo: noteTitle.bottomAnchor, constant: 12), scroll.leadingAnchor.constraint(equalTo: root.leadingAnchor, constant: 24), scroll.trailingAnchor.constraint(equalTo: root.trailingAnchor, constant: -24),
             online.topAnchor.constraint(equalTo: scroll.bottomAnchor, constant: 14), online.leadingAnchor.constraint(equalTo: destination.trailingAnchor, constant:12),
-            destination.leadingAnchor.constraint(equalTo: scroll.leadingAnchor), destination.centerYAnchor.constraint(equalTo: online.centerYAnchor), destination.widthAnchor.constraint(equalToConstant:110),
+            destination.leadingAnchor.constraint(equalTo: scroll.leadingAnchor), destination.centerYAnchor.constraint(equalTo: online.centerYAnchor), destination.widthAnchor.constraint(equalToConstant:160),
             copy.topAnchor.constraint(equalTo: online.bottomAnchor, constant: 10), copy.leadingAnchor.constraint(equalTo: root.leadingAnchor, constant: 24),
             clear.leadingAnchor.constraint(equalTo: copy.trailingAnchor, constant: 10), clear.centerYAnchor.constraint(equalTo: copy.centerYAnchor),
             quit.trailingAnchor.constraint(equalTo: scroll.trailingAnchor), quit.centerYAnchor.constraint(equalTo: copy.centerYAnchor), hide.trailingAnchor.constraint(equalTo: quit.leadingAnchor, constant: -8), hide.centerYAnchor.constraint(equalTo: copy.centerYAnchor),
@@ -129,11 +130,15 @@ final class App: NSObject, NSApplicationDelegate, NSTextViewDelegate, NSTextFiel
     @objc func saveOnline() {
         guard save() else { return }
         let panel = NSSavePanel()
-        panel.nameFieldStringValue = "Klad.txt"
-        panel.title = "Bewaar je klad als tekst"
+        let markdown = destination.indexOfSelectedItem == 1
+        panel.allowedContentTypes = [markdown ? (UTType(filenameExtension: "md") ?? .plainText) : .plainText]
+        panel.allowsOtherFileTypes = false
+        panel.nameFieldStringValue = markdown ? "Klad.md" : "Klad.txt"
+        panel.title = markdown ? "Bewaar je klad als Markdown" : "Bewaar je klad als tekst"
         guard panel.runModal() == .OK, let url = panel.url else { return }
         do {
-            let text = [noteTitle.stringValue, editor.string].filter { !$0.isEmpty }.joined(separator: "\n\n")
+            let heading = markdown && !noteTitle.stringValue.isEmpty ? "# " + noteTitle.stringValue : noteTitle.stringValue
+            let text = [heading, editor.string].filter { !$0.isEmpty }.joined(separator: "\n\n")
             try text.write(to: url, atomically: true, encoding: .utf8)
             guard try String(contentsOf: url, encoding: .utf8) == text else { throw NSError(domain: "FMT", code: 1) }
             info.stringValue = "Tekstbestand bewaard · " + url.lastPathComponent
