@@ -1,6 +1,7 @@
 #!/bin/zsh
 set -eu
 cd "${0:A:h}"
+python3 Resources/maak-icoon.py
 APP="$PWD/FMT Kladblok.app"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp Resources/FMT-Kladblok.icns "$APP/Contents/Resources/FMT-Kladblok.icns"
