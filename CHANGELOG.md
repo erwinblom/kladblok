@@ -1,6 +1,6 @@
 # Wijzigingen
 
-## Nog niet uitgebracht
+## 2.0.1 — 16 november 2026
 
 - Broncode van `index.html` leesbaar opgemaakt, met uitleg en twee blokken INSTELLINGEN (uiterlijk; naam, logo en bestandsnaam). De werking is gelijk gebleven.
 - `AGENTS.md` toegevoegd: instructies voor de AI van wie Kladblok wil aanpassen.

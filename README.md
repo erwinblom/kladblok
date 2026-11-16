@@ -4,7 +4,7 @@
 
 ![Zo ziet FMT Kladblok eruit: een notitie schrijven en bewaren](docs/kladblok.png)
 
-**[Download Kladblok voor Mac, Windows en Linux](https://github.com/erwinblom/kladblok/releases/download/v2.0.0/FMT-Kladblok-v2.0.0.zip)**
+**[Download Kladblok voor Mac, Windows en Linux](https://github.com/erwinblom/kladblok/releases/download/v2.0.1/FMT-Kladblok-v2.0.1.zip)**
 
 Gratis · Geen account · Geen installatie · Werkt offline
 
@@ -62,7 +62,7 @@ Gebruik steeds dezelfde browser, hetzelfde profiel en dezelfde map.
 
 - Eén klad tegelijk.
 - Geen synchronisatie tussen apparaten of browsers.
-- Getest in Chromium op Ubuntu 24.04, Windows Server 2022 en macOS 14. Zie de [platformcontrole](https://github.com/erwinblom/kladblok/actions/workflows/platforms.yml).
+- Getest in Chromium op Ubuntu 24.04, Windows Server 2022 en macOS 15.8.2 (ARM64). Zie de [platformcontrole](https://github.com/erwinblom/kladblok/actions/workflows/platforms.yml).
 - De koppeling met Werkplaats uit mijn eigen versie zit niet in deze download.
 
 ## Als iets niet werkt
