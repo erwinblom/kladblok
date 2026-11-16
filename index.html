@@ -1,15 +1,349 @@
-<!doctype html><html lang="nl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FMT Kladblok</title><link rel="icon" href="Resources/fmt-kladblok.svg"><style>
-:root{--accent:#e10600}*{box-sizing:border-box}body{margin:0;background:#f8f7f3;color:#111;font:17px Arial,sans-serif}main{max-width:900px;margin:5vh auto;padding:24px}header{display:flex;align-items:center;gap:20px;margin-bottom:24px}header img{width:72px;height:72px}h1{font-size:32px;margin:0;color:var(--accent)}header p{font-size:11px;font-weight:bold;letter-spacing:2px}label{display:block;font-weight:bold;margin:16px 0 8px}input,textarea,select,button{font:inherit}input,textarea{width:100%;border:2px solid #111;background:white;padding:16px}textarea{min-height:38vh;resize:vertical;line-height:1.6}nav{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}button,select{border:2px solid #111;padding:11px 16px;background:white;cursor:pointer}button.primary{background:var(--accent);color:white;font-weight:bold}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #1769aa;outline-offset:3px}#status{font-size:14px;min-height:2em}footer{font-size:13px;line-height:1.6;color:#555}dialog{max-width:420px;border:2px solid black;padding:24px}dialog::backdrop{background:#0006}@media(max-width:500px){main{margin:0;padding:16px}h1{font-size:25px}nav button{flex-grow:1}}
-</style><main><header><img src="Resources/fmt-kladblok.svg" alt=""><div><h1>FMT Kladblok</h1><p>FAST MOVING TARGETS</p></div></header><p>Eén plek voor even. Plak of schrijf maar.</p><label for="title">Titel van je klad</label><input id="title" autocomplete="off"><label for="body">Je tekst</label><textarea id="body" spellcheck="true"></textarea><nav aria-label="Klad bewaren"><select id="format" aria-label="Bestandsformaat"><option value="txt">Tekst (.txt)</option><option value="md">Markdown (.md)</option></select><button id="download" class="primary">Download bestand</button><button id="copy">Kopieer alles</button><button id="clear">Wis</button><button id="undo" hidden>Herstel gewist klad</button></nav><p id="status" role="status"></p><footer>Je klad blijft in deze browser op deze computer. Download belangrijke tekst ook als bestand.<br>Open steeds dezelfde uitgepakte map in dezelfde browser. Privémodus en het wissen van browsergegevens kunnen je klad verwijderen.</footer><dialog id="confirm"><h2>Kladblok leegmaken?</h2><p>Titel en tekst worden gewist. Je kunt dit tijdens deze sessie herstellen.</p><nav><button id="cancel">Annuleer</button><button id="erase">Wis klad</button></nav></dialog></main><script>
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FMT Kladblok</title>
+<link rel="icon" href="Resources/fmt-kladblok.svg">
+
+<style>
+/* ============================================================
+   INSTELLINGEN VOOR HET UITERLIJK
+   Verander hier kleuren en letters. Bewaar het bestand en
+   herlaad de pagina in je browser om het resultaat te zien.
+   ============================================================ */
+:root {
+  --accent: #e10600;                 /* kleur van de titel en de hoofdknop */
+  --achtergrond: #f8f7f3;            /* kleur van de pagina */
+  --tekst: #111;                     /* kleur van tekst en randen */
+  --papier: white;                   /* kleur van de schrijfvelden en knoppen */
+  --lettertype: Arial, sans-serif;
+  --lettergrootte: 17px;
+  --breedte: 900px;                  /* maximale breedte van het kladblok */
+}
+
+/* ---------- Pagina ---------- */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--achtergrond);
+  color: var(--tekst);
+  font: var(--lettergrootte) var(--lettertype);
+}
+
+main {
+  max-width: var(--breedte);
+  margin: 5vh auto;
+  padding: 24px;
+}
+
+/* ---------- Kop met logo en naam ---------- */
+header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+header img { width: 72px; height: 72px; }
+
+h1 {
+  font-size: 32px;
+  margin: 0;
+  color: var(--accent);
+}
+
+header p {
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+/* ---------- Schrijfvelden ---------- */
+label {
+  display: block;
+  font-weight: bold;
+  margin: 16px 0 8px;
+}
+
+input, textarea, select, button { font: inherit; }
+
+input, textarea {
+  width: 100%;
+  border: 2px solid var(--tekst);
+  background: var(--papier);
+  padding: 16px;
+}
+
+textarea {
+  min-height: 38vh;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+/* ---------- Knoppen ---------- */
+nav {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+button, select {
+  border: 2px solid var(--tekst);
+  padding: 11px 16px;
+  background: var(--papier);
+  cursor: pointer;
+}
+
+button.primary {
+  background: var(--accent);
+  color: white;
+  font-weight: bold;
+}
+
+/* Zichtbare rand voor wie met het toetsenbord werkt */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid #1769aa;
+  outline-offset: 3px;
+}
+
+/* ---------- Meldingen en toelichting ---------- */
+#status { font-size: 14px; min-height: 2em; }
+
+footer { font-size: 13px; line-height: 1.6; color: #555; }
+
+/* ---------- Venster "Kladblok leegmaken?" ---------- */
+dialog {
+  max-width: 420px;
+  border: 2px solid black;
+  padding: 24px;
+}
+
+dialog::backdrop { background: #0006; }
+
+/* ---------- Kleine schermen ---------- */
+@media (max-width: 500px) {
+  main { margin: 0; padding: 16px; }
+  h1 { font-size: 25px; }
+  nav button { flex-grow: 1; }
+}
+</style>
+</head>
+
+<body>
+<main>
+
+  <!-- Kop: logo, naam en ondertitel. De naam en ondertitel komen uit INSTELLINGEN onderaan dit bestand. -->
+  <header>
+    <img id="logo" src="Resources/fmt-kladblok.svg" alt="">
+    <div>
+      <h1 id="naam">FMT Kladblok</h1>
+      <p id="ondertitel">FAST MOVING TARGETS</p>
+    </div>
+  </header>
+
+  <p id="welkom">Eén plek voor even. Plak of schrijf maar.</p>
+
+  <!-- De twee schrijfvelden -->
+  <label for="title">Titel van je klad</label>
+  <input id="title" autocomplete="off">
+
+  <label for="body">Je tekst</label>
+  <textarea id="body" spellcheck="true"></textarea>
+
+  <!-- De knoppen -->
+  <nav aria-label="Klad bewaren">
+    <select id="format" aria-label="Bestandsformaat">
+      <option value="txt">Tekst (.txt)</option>
+      <option value="md">Markdown (.md)</option>
+    </select>
+    <button id="download" class="primary">Download bestand</button>
+    <button id="copy">Kopieer alles</button>
+    <button id="clear">Wis</button>
+    <button id="undo" hidden>Herstel gewist klad</button>
+  </nav>
+
+  <!-- Hier verschijnen meldingen, zoals "Automatisch bewaard" -->
+  <p id="status" role="status"></p>
+
+  <footer>
+    Je klad blijft in deze browser op deze computer. Download belangrijke tekst ook als bestand.<br>
+    Open steeds dezelfde uitgepakte map in dezelfde browser. Privémodus en het wissen van browsergegevens kunnen je klad verwijderen.
+  </footer>
+
+  <!-- Venster dat om bevestiging vraagt voor het wissen -->
+  <dialog id="confirm">
+    <h2>Kladblok leegmaken?</h2>
+    <p>Titel en tekst worden gewist. Je kunt dit tijdens deze sessie herstellen.</p>
+    <nav>
+      <button id="cancel">Annuleer</button>
+      <button id="erase">Wis klad</button>
+    </nav>
+  </dialog>
+
+</main>
+
+<script>
 'use strict';
-const $=id=>document.getElementById(id),key='fmt-kladblok-browser-v1';let previous=null;
-function note(){return {title:$('title').value,body:$('body').value}}
-function message(text){$('status').textContent=text}
-function persist(){try{localStorage.setItem(key,JSON.stringify(note()));message(`${[...$('body').value].length} tekens · Automatisch in deze browser bewaard`);return true}catch{message('Automatisch bewaren mislukt. Download je tekst vóór je afsluit.');return false}}
-try{const raw=localStorage.getItem(key);if(raw){const n=JSON.parse(raw);if(typeof n.title!=='string'||typeof n.body!=='string')throw Error();$('title').value=n.title;$('body').value=n.body}message('Je klad is klaar. Wijzigingen worden automatisch bewaard.')}catch{message('Eerder klad kon niet worden gelezen. Controleer een eerder gedownload bestand.')}
-for(const id of ['title','body'])$(id).addEventListener('input',persist);
-function output(markdown=false){const n=note();return [n.title?(markdown?'# ':'')+n.title:'',n.body].filter(Boolean).join('\n\n')}
-$('download').onclick=()=>{const ext=$('format').value;const url=URL.createObjectURL(new Blob([output(ext==='md')],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='Klad.'+ext;a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);message('Download gestart. Je browser bepaalt de downloadmap of vraagt een bestemming.')};
-$('copy').onclick=async()=>{try{await navigator.clipboard.writeText(output());message('Titel en tekst gekopieerd.')}catch{message('Kopiëren niet toegestaan door deze browser. Selecteer en kopieer de tekst met Ctrl+C of ⌘C.')}};
-$('clear').onclick=()=>{if($('title').value||$('body').value)$('confirm').showModal()};$('cancel').onclick=()=>$('confirm').close();$('erase').onclick=()=>{previous=note();$('title').value='';$('body').value='';$('confirm').close();persist();$('undo').hidden=false};$('undo').onclick=()=>{if(previous){$('title').value=previous.title;$('body').value=previous.body;previous=null;persist();$('undo').hidden=true}};
-</script></html>
+
+/* ============================================================
+   INSTELLINGEN
+   Verander hier de naam, het logo en de bestandsnaam.
+   Kleuren en letters staan bovenaan dit bestand.
+   ============================================================ */
+const INSTELLINGEN = {
+  naam: 'FMT Kladblok',                 // staat in het tabblad en boven het kladblok
+  ondertitel: 'FAST MOVING TARGETS',    // kleine regel onder de naam; laat leeg ('') om te verbergen
+  logo: 'Resources/fmt-kladblok.svg',   // pad naar je eigen afbeelding; laat leeg ('') om te verbergen
+  welkom: 'Eén plek voor even. Plak of schrijf maar.',
+  bestandsnaam: 'Klad'                  // de download heet dan Klad.txt of Klad.md
+};
+
+/* LET OP: verander deze sleutel niet zomaar.
+   Onder deze naam bewaart de browser je klad. Met een andere
+   sleutel lijkt een bestaand klad verdwenen. */
+const OPSLAGSLEUTEL = 'fmt-kladblok-browser-v1';
+
+
+/* ---------- Hulpjes ---------- */
+
+// Zoekt een onderdeel van de pagina op, bijvoorbeeld $('title')
+const $ = id => document.getElementById(id);
+
+// Het laatst gewiste klad, zodat "Herstel gewist klad" werkt
+let vorigKlad = null;
+
+// Geeft de huidige titel en tekst
+function klad() {
+  return { title: $('title').value, body: $('body').value };
+}
+
+// Toont een melding onder de knoppen
+function melding(tekst) {
+  $('status').textContent = tekst;
+}
+
+
+/* ---------- Instellingen toepassen ---------- */
+
+document.title = INSTELLINGEN.naam;
+$('naam').textContent = INSTELLINGEN.naam;
+$('ondertitel').textContent = INSTELLINGEN.ondertitel;
+$('ondertitel').hidden = !INSTELLINGEN.ondertitel;
+$('welkom').textContent = INSTELLINGEN.welkom;
+if (INSTELLINGEN.logo) {
+  $('logo').src = INSTELLINGEN.logo;
+} else {
+  $('logo').hidden = true;
+}
+
+
+/* ---------- Automatisch bewaren ---------- */
+
+// Bewaart titel en tekst in de browser. Geeft true terug als het lukte.
+function bewaar() {
+  try {
+    localStorage.setItem(OPSLAGSLEUTEL, JSON.stringify(klad()));
+    const aantalTekens = [...$('body').value].length;
+    melding(`${aantalTekens} tekens · Automatisch in deze browser bewaard`);
+    return true;
+  } catch {
+    melding('Automatisch bewaren mislukt. Download je tekst vóór je afsluit.');
+    return false;
+  }
+}
+
+// Bij het openen: haal een eerder bewaard klad terug
+try {
+  const bewaard = localStorage.getItem(OPSLAGSLEUTEL);
+  if (bewaard) {
+    const eerder = JSON.parse(bewaard);
+    if (typeof eerder.title !== 'string' || typeof eerder.body !== 'string') throw Error();
+    $('title').value = eerder.title;
+    $('body').value = eerder.body;
+  }
+  melding('Je klad is klaar. Wijzigingen worden automatisch bewaard.');
+} catch {
+  melding('Eerder klad kon niet worden gelezen. Controleer een eerder gedownload bestand.');
+}
+
+// Bewaar bij elke toetsaanslag in titel of tekst
+for (const id of ['title', 'body']) {
+  $(id).addEventListener('input', bewaar);
+}
+
+
+/* ---------- Wat er in de download en op het klembord komt ---------- */
+
+// Titel en tekst onder elkaar. Bij Markdown krijgt de titel een # ervoor.
+function uitvoer(alsMarkdown = false) {
+  const { title, body } = klad();
+  const kop = title ? (alsMarkdown ? '# ' : '') + title : '';
+  return [kop, body].filter(Boolean).join('\n\n');
+}
+
+
+/* ---------- Knop: Download bestand ---------- */
+
+$('download').onclick = () => {
+  const formaat = $('format').value;   // 'txt' of 'md'
+  const inhoud = new Blob([uitvoer(formaat === 'md')], { type: 'text/plain;charset=utf-8' });
+  const adres = URL.createObjectURL(inhoud);
+
+  const link = document.createElement('a');
+  link.href = adres;
+  link.download = INSTELLINGEN.bestandsnaam + '.' + formaat;
+  link.click();
+
+  setTimeout(() => URL.revokeObjectURL(adres), 30000);
+  melding('Download gestart. Je browser bepaalt de downloadmap of vraagt een bestemming.');
+};
+
+
+/* ---------- Knop: Kopieer alles ---------- */
+
+$('copy').onclick = async () => {
+  try {
+    await navigator.clipboard.writeText(uitvoer());
+    melding('Titel en tekst gekopieerd.');
+  } catch {
+    melding('Kopiëren niet toegestaan door deze browser. Selecteer en kopieer de tekst met Ctrl+C of ⌘C.');
+  }
+};
+
+
+/* ---------- Knoppen: Wis en Herstel ---------- */
+
+// Wis vraagt eerst om bevestiging
+$('clear').onclick = () => {
+  if ($('title').value || $('body').value) $('confirm').showModal();
+};
+
+$('cancel').onclick = () => $('confirm').close();
+
+// Pas na bevestiging wordt gewist. Het oude klad blijft onthouden voor herstel.
+$('erase').onclick = () => {
+  vorigKlad = klad();
+  $('title').value = '';
+  $('body').value = '';
+  $('confirm').close();
+  bewaar();
+  $('undo').hidden = false;
+};
+
+$('undo').onclick = () => {
+  if (!vorigKlad) return;
+  $('title').value = vorigKlad.title;
+  $('body').value = vorigKlad.body;
+  vorigKlad = null;
+  bewaar();
+  $('undo').hidden = true;
+};
+</script>
+</body>
+</html>
