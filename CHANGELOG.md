@@ -1,5 +1,12 @@
 # Wijzigingen
 
+## Nog niet uitgebracht
+
+- Broncode van `index.html` leesbaar opgemaakt, met uitleg en twee blokken INSTELLINGEN (uiterlijk; naam, logo en bestandsnaam). De werking is gelijk gebleven.
+- `AGENTS.md` toegevoegd: instructies voor de AI van wie Kladblok wil aanpassen.
+- Handleiding ingekort en opnieuw ingedeeld; de koppeling met Werkplaats staat nu in `docs/KOPPELEN-MET-WERKPLAATS.md`.
+- `MERKVOORWAARDEN.md` verplaatst naar `docs/`.
+
 ## 1.1.0 — 2 november 2026
 
 Keuze tussen tekst (.txt) en Markdown (.md) bij export. Markdown gebruikt de ingevulde titel als eerste kop; de inhoud blijft behouden.
